@@ -2,7 +2,7 @@
 
 <div align="center">
 
-## 🔥 [▶️ PLAY NOW](https://rishabhgito.github.io/Jhotta-Wars/fighter-game/) 
+## 🔥 [▶️ PLAY NOW](https://rishabhgito.github.io/Jhotta-Wars/fighter-game/index.html) 
 
 ### *Click the big button above to play the game!*
 
