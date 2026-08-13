@@ -400,15 +400,8 @@ class Fighter {
   }
 
   _updateFacing() {
-    if (!this.enemy) return;
-    if (this.state === 'KO') return;
-    if (this.state.startsWith('ATTACK')) return;
-    if (this.hitStun > 0 || this.blockStun > 0) return;
-    // Face toward enemy
-    const ex = this.enemy.x + this.enemy.w / 2;
-    const mx = this.x + this.w / 2;
-    if (ex > mx) this.facing = 1;
-    else          this.facing = -1;
+    // Facing is updated directly by movement inputs (A = left [-1], D = right [1]).
+    // Keep current facing direction so attacks always strike in the direction turned.
   }
 
   /* ---- draw ---- */
@@ -487,17 +480,19 @@ class CpuAI {
     if (me.hitStun > 0 || me.blockStun > 0) return;
     if (['ATTACK_LIGHT','ATTACK_HEAVY','ATTACK_KICK','ATTACK_SPECIAL'].includes(me.state)) return;
 
-    const dir = me.facing;
+    const dirToEnemy = (this.enemy.x + this.enemy.w / 2) > (me.x + me.w / 2) ? 1 : -1;
 
     switch (this.action) {
       case 'approach':
-        me.vx = dir * me.speed * 0.85;
+        me.facing = dirToEnemy;
+        me.vx = me.facing * me.speed * 0.85;
         if (!me.state.startsWith('ATTACK') && me.state !== 'HIT') me.state = 'WALK_FWD';
         break;
 
       case 'retreat':
-        me.vx = -dir * me.speed * 0.7;
-        if (!me.state.startsWith('ATTACK') && me.state !== 'HIT') me.state = 'WALK_BWD';
+        me.facing = -dirToEnemy;
+        me.vx = me.facing * me.speed * 0.7;
+        if (!me.state.startsWith('ATTACK') && me.state !== 'HIT') me.state = 'WALK_FWD';
         break;
 
       case 'jump':
@@ -510,21 +505,25 @@ class CpuAI {
         break;
 
       case 'attack_light':
+        me.facing = dirToEnemy;
         if (dist < 120) { me.startAttack('light'); this.action = 'approach'; }
         else this.action = 'approach';
         break;
 
       case 'attack_heavy':
+        me.facing = dirToEnemy;
         if (dist < 110) { me.startAttack('heavy'); this.action = 'approach'; }
         else this.action = 'approach';
         break;
 
       case 'attack_kick':
+        me.facing = dirToEnemy;
         if (dist < 140) { me.startAttack('kick'); this.action = 'approach'; }
         else this.action = 'approach';
         break;
 
       case 'special':
+        me.facing = dirToEnemy;
         if (dist < 160 || me.charId === 'AMIT') {
           me.startAttack('special'); this.action = 'approach';
         } else this.action = 'approach';
@@ -732,8 +731,18 @@ const Game = {
 
     if (canMove) {
       let moved = false;
-      if (Input.held('KeyA')) { p1.vx = -p1.speed; p1.state = 'WALK_BWD'; moved = true; }
-      if (Input.held('KeyD')) { p1.vx =  p1.speed; p1.state = 'WALK_FWD'; moved = true; }
+      if (Input.held('KeyA')) { 
+        p1.vx = -p1.speed; 
+        p1.facing = -1; // Face LEFT
+        p1.state = 'WALK_FWD'; 
+        moved = true; 
+      }
+      if (Input.held('KeyD')) { 
+        p1.vx =  p1.speed; 
+        p1.facing = 1;  // Face RIGHT
+        p1.state = 'WALK_FWD'; 
+        moved = true; 
+      }
       if (!moved && p1.grounded && !['HIT','JUMP_RISE','JUMP_FALL'].includes(p1.state) && !inAttack) {
         p1.state = Input.held('KeyS') ? 'CROUCH' : 'IDLE';
       }
@@ -742,7 +751,7 @@ const Game = {
     // Block = hold S
     p1.isBlocking = Input.held('KeyS') && p1.grounded && !inAttack;
 
-    // Attacks (single press)
+    // Attacks (single press) — attacks hit in whichever direction player is facing!
     if (Input.pressed('KeyG')) p1.startAttack('light');
     if (Input.pressed('KeyH')) p1.startAttack('heavy');
     if (Input.pressed('KeyJ')) p1.startAttack('kick');

@@ -18,7 +18,7 @@ const CHAR_DATA = {
       skin:'#f5cba7', dark:'#7b241c', belt:'#d4ac0d',
       pants:'#2c2c2c', boot:'#1a0a0a', hair:'#111111'
     },
-    stats: { maxHp:150, maxSt:100, speed:3.6, jumpPow:-15, weight:1.25 },
+    stats: { maxHp:150, maxSt:100, speed:4.5, jumpPow:-15, weight:1.25 },
     moves: {
       light:   { dmg:8,  kbx:4,  kby:-2, range:68,  su:4,  act:5,  rec:8,  st:5,  name:'JAB'         },
       heavy:   { dmg:20, kbx:9,  kby:-3, range:72,  su:9,  act:6,  rec:17, st:13, name:'CROSS'        },
@@ -35,7 +35,7 @@ const CHAR_DATA = {
       skin:'#f5cba7', dark:'#004d5e', belt:'#37474f',
       pants:'#1c2833', boot:'#0d1b22', hair:'#0a0a0a'
     },
-    stats: { maxHp:110, maxSt:120, speed:5.6, jumpPow:-16.5, weight:0.82 },
+    stats: { maxHp:110, maxSt:120, speed:7.0, jumpPow:-16.5, weight:0.82 },
     moves: {
       light:   { dmg:6,  kbx:3,  kby:-1, range:60,  su:2,  act:3,  rec:5,  st:4,  name:'SLASH'        },
       heavy:   { dmg:15, kbx:7,  kby:-2, range:66,  su:7,  act:5,  rec:13, st:10, name:'STRIKE'       },
@@ -52,7 +52,7 @@ const CHAR_DATA = {
       skin:'#d4a574', dark:'#145a32', belt:'#ca6f1e',
       pants:'#1a1a1a', boot:'#0d0d0d', hair:'#0a0a0a'
     },
-    stats: { maxHp:130, maxSt:110, speed:4.2, jumpPow:-15.5, weight:1.0 },
+    stats: { maxHp:130, maxSt:110, speed:5.25, jumpPow:-15.5, weight:1.0 },
     moves: {
       light:   { dmg:7,  kbx:4,  kby:-2, range:64,  su:3,  act:4,  rec:7,  st:5,  name:'PUNCH'        },
       heavy:   { dmg:18, kbx:8,  kby:-3, range:70,  su:8,  act:6,  rec:15, st:11, name:'SLAM'         },
@@ -69,7 +69,7 @@ const CHAR_DATA = {
       skin:'#f5cba7', dark:'#4a235a', belt:'#f1c40f',
       pants:'#17202a', boot:'#0d0d0d', hair:'#0a0a0a'
     },
-    stats: { maxHp:120, maxSt:130, speed:4.0, jumpPow:-15.2, weight:0.95 },
+    stats: { maxHp:120, maxSt:130, speed:5.0, jumpPow:-15.2, weight:0.95 },
     moves: {
       light:   { dmg:7,  kbx:4,  kby:-2, range:65,  su:3,  act:4,  rec:7,  st:5,  name:'ZAP'          },
       heavy:   { dmg:17, kbx:8,  kby:-4, range:72,  su:7,  act:5,  rec:14, st:11, name:'BLAST'         },
