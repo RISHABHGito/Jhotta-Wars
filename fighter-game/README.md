@@ -68,14 +68,15 @@
 ### File Structure
 ```
 fighter-game/
-├── index.html          # Main HTML file with canvas
+├── index.html          # Main HTML file with canvas element
+├── README.md           # Project documentation
 ├── css/
-│   └── game.css       # Game styling and canvas setup
-├── js/
-│   ├── main.js        # Game loop and core logic
-│   ├── characters.js  # Character classes and mechanics
-│   └── input.js       # Input handling and controls
-└── README.md          # This file
+│   └── game.css        # Game styling and canvas setup
+└── js/
+    ├── main.js         # Game loop and core logic
+    ├── characters.js   # Character classes and mechanics
+    ├── input.js        # Input handling and controls
+    └── ui.js           # UI elements and display management
 ```
 
 ---
