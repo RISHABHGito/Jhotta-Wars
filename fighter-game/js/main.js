@@ -22,8 +22,20 @@ const ROUND_SEC = 60;     // timer per round
    ============================================================ */
 const Audio = (() => {
   let ctx = null;
+  let masterGain = null;
+  // Master volume 0..1 — persisted in localStorage so Settings screen sticks across sessions
+  let volume = (() => {
+    const saved = parseFloat(localStorage.getItem('bb_volume'));
+    return isNaN(saved) ? 0.7 : Math.max(0, Math.min(1, saved));
+  })();
+
   function _ctx() {
-    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (!ctx) {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = ctx.createGain();
+      masterGain.gain.value = volume;
+      masterGain.connect(ctx.destination);
+    }
     return ctx;
   }
   function tone(freq, type, dur, vol = 0.3, detune = 0) {
@@ -31,7 +43,7 @@ const Audio = (() => {
       const ac = _ctx();
       const osc = ac.createOscillator();
       const gain = ac.createGain();
-      osc.connect(gain); gain.connect(ac.destination);
+      osc.connect(gain); gain.connect(masterGain);
       osc.type = type; osc.frequency.value = freq;
       osc.detune.value = detune;
       gain.gain.setValueAtTime(vol, ac.currentTime);
@@ -47,13 +59,22 @@ const Audio = (() => {
       for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
       const src = ac.createBufferSource();
       const gain = ac.createGain();
-      src.buffer = buf; src.connect(gain); gain.connect(ac.destination);
+      src.buffer = buf; src.connect(gain); gain.connect(masterGain);
       gain.gain.setValueAtTime(vol, ac.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
       src.start(); src.stop(ac.currentTime + dur);
     } catch (e) {}
   }
   return {
+    /** Set master volume 0..1 — used by the Settings screen */
+    setVolume(v) {
+      volume = Math.max(0, Math.min(1, v));
+      localStorage.setItem('bb_volume', String(volume));
+      if (masterGain) masterGain.gain.value = volume;
+    },
+    getVolume() { return volume; },
+    /** Create/resume the AudioContext — call on first user gesture (menu click) */
+    unlock() { _ctx(); if (ctx.state === 'suspended') ctx.resume(); },
     hitLight()   { tone(180, 'square', 0.08, 0.25); noise(0.05, 0.15); },
     hitHeavy()   { tone(90,  'sawtooth', 0.15, 0.4); noise(0.12, 0.3); },
     hitBlock()   { tone(300, 'triangle', 0.1, 0.2); },
@@ -591,18 +612,37 @@ const Game = {
   announcerMsg: null,  // { text, timer, col }
   lastTime: 0,
   frame: 0,
+  _initialized: false, // true once canvas + loop are set up (only ever happens once)
+  active: false,        // true only while a match is actually being played (menu vs game)
 
+  /** One-time canvas + render-loop setup. Safe to call more than once. */
   init() {
+    if (this._initialized) return;
+    this._initialized = true;
     this.canvas = document.getElementById('gameCanvas');
     this.ctx    = this.canvas.getContext('2d');
     this.canvas.width  = GW;
     this.canvas.height = GH;
 
-    this._createFighters('BALE', 'MODU');
-    this._startRound();
     this.lastTime = performance.now();
     requestAnimationFrame(t => this._loop(t));
   },
+
+  /** Called from the UI when the player picks a mode and starts a fresh match. */
+  startMatch(p1Id = 'BALE', p2Id = 'MODU') {
+    this.init();
+    Input.flush(); // clear any stale single-frame key presses accumulated while on menu screens
+    this.round = 1;
+    this.p1Wins = 0;
+    this.p2Wins = 0;
+    this.matchWinner = null;
+    this._createFighters(p1Id, p2Id);
+    this._startRound();
+    this.active = true;
+  },
+
+  /** Pause the sim (used when the player leaves to the menu). Loop keeps running but idles. */
+  pause() { this.active = false; },
 
   _createFighters(p1Id, p2Id) {
     const p1 = new Fighter(p1Id, 200, 1, true,  'p1');
@@ -642,21 +682,38 @@ const Game = {
   _loop(timestamp) {
     const dt = Math.min((timestamp - this.lastTime) / 16.67, 3); // cap at 3x
     this.lastTime = timestamp;
-    this.frame++;
 
-    this._update(dt);
-    this._render();
-    Input.flush();
+    // While the player is on a menu screen (not `active`), skip sim/render entirely —
+    // avoids wasted work and keeps input state from piling up behind the scenes.
+    if (this.active) {
+      this.frame++;
+      this._update(dt);
+      this._render();
+      Input.flush();
+    }
     requestAnimationFrame(t => this._loop(t));
   },
 
   /* ---- UPDATE ---- */
   _update(dt) {
+    // Escape returns to the main menu from anywhere mid-match.
+    // `onExitToMenu` is wired up by ui.js — Game itself doesn't know about menu screens.
+    if (Input.pressed('Escape') && this.onExitToMenu) {
+      Input.flush();
+      this.onExitToMenu();
+      return;
+    }
+
     if (this.phase === 'COUNTDOWN') {
       this._updateCountdown(dt);
       return;
     }
     if (this.phase === 'ROUND_END' || this.phase === 'MATCH_END') {
+      // Press R on the match-end screen to rematch without touching the menu.
+      if (this.phase === 'MATCH_END' && Input.pressed('KeyR')) {
+        this.startMatch(this.fighters[0].charId, this.fighters[1].charId);
+        return;
+      }
       this._updateRoundEnd(dt);
       return;
     }
@@ -1083,7 +1140,9 @@ const Game = {
       ctx.fillStyle = '#888';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('PRESS F5 TO PLAY AGAIN', GW / 2, GH / 2 + 90);
+      ctx.fillText('PRESS R TO REMATCH', GW / 2, GH / 2 + 90);
+      ctx.font = "10px 'Press Start 2P', monospace";
+      ctx.fillText('ESC FOR MENU', GW / 2, GH / 2 + 120);
     }
     ctx.restore();
   },
@@ -1091,17 +1150,13 @@ const Game = {
 
 /* ============================================================
    START
+   Note: Game no longer auto-starts on load. The landing page (ui.js)
+   calls Game.startMatch() once the player picks PLAY -> VS PC.
+   Audio is unlocked from ui.js on the first menu click (browsers
+   require a user gesture before audio can play).
    ============================================================ */
 window.addEventListener('load', () => {
-  // Unlock audio on first interaction
-  document.addEventListener('keydown', () => {
-    const ac = new (window.AudioContext || window.webkitAudioContext)();
-    ac.resume();
-  }, { once: true });
-
   // Hide loading message if present
   const msg = document.getElementById('loading-msg');
   if (msg) msg.classList.add('hidden');
-
-  Game.init();
 });

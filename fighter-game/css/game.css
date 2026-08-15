@@ -48,3 +48,230 @@ body {
     0 0 60px rgba(220, 40, 40, 0.12),
     0 0 120px rgba(0, 0, 0, 0.9);
 }
+
+/* ============================================================
+   MENU SCREENS (Landing / Mode Select / Settings / Controls)
+   ============================================================ */
+
+.hidden {
+  display: none !important;
+}
+
+.screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.menu-panel {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding: 40px 32px;
+  background: rgba(12, 12, 22, 0.85);
+  border: 2px solid #1a1a1a;
+  box-shadow:
+    0 0 0 3px #111,
+    0 0 60px rgba(220, 40, 40, 0.10),
+    0 0 120px rgba(0, 0, 0, 0.85);
+}
+
+.menu-panel-wide {
+  max-width: 640px;
+  align-items: stretch;
+  text-align: left;
+}
+
+.game-title {
+  font-family: 'Press Start 2P', cursive;
+  font-size: clamp(28px, 6vw, 44px);
+  color: #f0f0f0;
+  text-align: center;
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px rgba(220, 40, 40, 0.6);
+}
+
+.title-accent {
+  color: #e74c3c;
+}
+
+.game-subtitle {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 10px;
+  color: #00bcd4;
+  letter-spacing: 3px;
+  text-align: center;
+}
+
+.screen-heading {
+  font-family: 'Press Start 2P', cursive;
+  font-size: clamp(16px, 4vw, 22px);
+  color: #f0f0f0;
+  letter-spacing: 2px;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+}
+
+.controls-subheading {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 11px;
+  color: #00bcd4;
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+.menu-buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.menu-btn {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 13px;
+  color: #ddd;
+  background: #14141f;
+  border: 2px solid #2a2a3a;
+  padding: 16px 18px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-align: center;
+  transition: transform 0.08s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.menu-btn:hover:not(:disabled) {
+  border-color: #e74c3c;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 #1a1a1a, 0 0 20px rgba(220, 40, 40, 0.35);
+}
+
+.menu-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.menu-btn-primary {
+  background: #2a1010;
+  border-color: #e74c3c;
+  color: #fff;
+}
+
+.menu-btn-primary:hover:not(:disabled) {
+  box-shadow: 0 4px 0 #6b1a1a, 0 0 24px rgba(220, 40, 40, 0.5);
+}
+
+.menu-btn-disabled,
+.menu-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.menu-btn-back {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #888;
+  background: transparent;
+  border-color: #2a2a3a;
+}
+
+.vs-txt {
+  color: #00bcd4;
+  font-size: 10px;
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+.badge {
+  display: block;
+  margin-top: 8px;
+  font-size: 8px;
+  color: #ff9800;
+  letter-spacing: 1px;
+}
+
+/* ---- Settings ---- */
+
+.settings-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.settings-label {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 11px;
+  color: #ddd;
+  letter-spacing: 1px;
+}
+
+.volume-slider {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #2a2a3a;
+  outline: none;
+  cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #e74c3c;
+  border: 2px solid #fff;
+  cursor: pointer;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: #e74c3c;
+  border: 2px solid #fff;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.settings-value {
+  align-self: flex-end;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 11px;
+  color: #00bcd4;
+}
+
+/* ---- Controls manual ---- */
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: minmax(90px, auto) 1fr;
+  gap: 10px 16px;
+  margin-bottom: 6px;
+  align-items: center;
+}
+
+.ctrl-key {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 10px;
+  color: #fff;
+  background: #1c1c2a;
+  border: 1px solid #2a2a3a;
+  padding: 6px 8px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.ctrl-desc {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 9px;
+  color: #aaa;
+  line-height: 1.5;
+}

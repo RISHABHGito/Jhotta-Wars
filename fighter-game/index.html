@@ -11,11 +11,95 @@
   <link rel="stylesheet" href="css/game.css">
 </head>
 <body>
-  <div id="game-wrapper">
+
+  <!-- ============================================================
+       LANDING PAGE
+       ============================================================ -->
+  <div id="screen-landing" class="screen">
+    <div class="menu-panel">
+      <h1 class="game-title">BLOCK<span class="title-accent">BRAWL</span></h1>
+      <p class="game-subtitle">CLASSIC 2D FIGHTER</p>
+      <nav class="menu-buttons">
+        <button class="menu-btn menu-btn-primary" data-nav="screen-mode-select">PLAY</button>
+        <button class="menu-btn" data-nav="screen-settings">SETTINGS</button>
+        <button class="menu-btn" data-nav="screen-controls">CONTROLS</button>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODE SELECT
+       ============================================================ -->
+  <div id="screen-mode-select" class="screen hidden">
+    <div class="menu-panel">
+      <h2 class="screen-heading">SELECT MODE</h2>
+      <nav class="menu-buttons">
+        <button class="menu-btn menu-btn-primary" id="btn-vs-pc">YOU <span class="vs-txt">VS</span> PC</button>
+        <button class="menu-btn menu-btn-disabled" disabled title="Coming soon">
+          VS PLAYER <span class="badge">COMING SOON</span>
+        </button>
+      </nav>
+      <button class="menu-btn menu-btn-back" data-nav="screen-landing">&larr; BACK</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SETTINGS
+       ============================================================ -->
+  <div id="screen-settings" class="screen hidden">
+    <div class="menu-panel">
+      <h2 class="screen-heading">SETTINGS</h2>
+      <div class="settings-row">
+        <label class="settings-label" for="volume-slider">SFX VOLUME</label>
+        <input type="range" id="volume-slider" class="volume-slider" min="0" max="100" value="70">
+        <span class="settings-value" id="volume-value">70%</span>
+      </div>
+      <button class="menu-btn menu-btn-back" data-nav="screen-landing">&larr; BACK</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       CONTROLS MANUAL
+       ============================================================ -->
+  <div id="screen-controls" class="screen hidden">
+    <div class="menu-panel menu-panel-wide">
+      <h2 class="screen-heading">CONTROLS</h2>
+
+      <h3 class="controls-subheading">PLAYER 1 (active)</h3>
+      <div class="controls-grid">
+        <div class="ctrl-key">W A S D</div><div class="ctrl-desc">Move / Jump (W) / Block (hold S)</div>
+        <div class="ctrl-key">G</div><div class="ctrl-desc">Light Attack</div>
+        <div class="ctrl-key">H</div><div class="ctrl-desc">Heavy Attack</div>
+        <div class="ctrl-key">J</div><div class="ctrl-desc">Kick</div>
+        <div class="ctrl-key">K</div><div class="ctrl-desc">Special (costs stamina)</div>
+      </div>
+
+      <h3 class="controls-subheading">PLAYER 2 (reserved for future local 2P mode)</h3>
+      <div class="controls-grid">
+        <div class="ctrl-key">ARROWS</div><div class="ctrl-desc">Move / Jump (Up) / Block (hold Down)</div>
+        <div class="ctrl-key">NUM 1 / 2 / 3 / 4</div><div class="ctrl-desc">Light / Heavy / Kick / Special</div>
+      </div>
+
+      <h3 class="controls-subheading">IN-MATCH</h3>
+      <div class="controls-grid">
+        <div class="ctrl-key">ESC</div><div class="ctrl-desc">Return to main menu</div>
+        <div class="ctrl-key">R</div><div class="ctrl-desc">Rematch (on match-end screen)</div>
+      </div>
+
+      <button class="menu-btn menu-btn-back" data-nav="screen-landing">&larr; BACK</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       GAME (hidden until a match starts)
+       ============================================================ -->
+  <div id="game-wrapper" class="hidden">
     <canvas id="gameCanvas"></canvas>
   </div>
+
   <script src="js/input.js"></script>
   <script src="js/characters.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/ui.js"></script>
 </body>
 </html>
