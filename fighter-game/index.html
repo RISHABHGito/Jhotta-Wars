@@ -44,6 +44,49 @@
   </div>
 
   <!-- ============================================================
+       CHARACTER SELECT (Tekken-style roster screen)
+       Reused for both Player 1 and Player 2 (CPU) picks —
+       ui.js relabels the header/accent between steps.
+       ============================================================ -->
+  <div id="screen-char-select" class="screen hidden">
+    <div class="cs-wrap">
+      <div class="cs-header" id="cs-header">
+        <span class="cs-player-tag" id="cs-player-tag">PLAYER 1</span>
+        <span class="cs-instruction">CHOOSE YOUR FIGHTER</span>
+      </div>
+
+      <div class="cs-stage">
+        <div class="cs-portrait-frame">
+          <canvas id="cs-portrait-canvas" width="230" height="296"></canvas>
+        </div>
+        <div class="cs-info">
+          <h2 class="cs-name" id="cs-name">BALE</h2>
+          <div class="cs-stat-row">
+            <span class="cs-stat-label">POWER</span>
+            <div class="cs-stat-bar"><div class="cs-stat-fill" id="cs-stat-power"></div></div>
+          </div>
+          <div class="cs-stat-row">
+            <span class="cs-stat-label">SPEED</span>
+            <div class="cs-stat-bar"><div class="cs-stat-fill" id="cs-stat-speed"></div></div>
+          </div>
+          <div class="cs-stat-row">
+            <span class="cs-stat-label">HEALTH</span>
+            <div class="cs-stat-bar"><div class="cs-stat-fill" id="cs-stat-health"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs-roster" id="cs-roster"></div>
+      <p class="cs-hint">USE &larr; &rarr; OR CLICK A FIGHTER &nbsp;&bull;&nbsp; ENTER TO CONFIRM</p>
+
+      <div class="cs-actions">
+        <button class="menu-btn menu-btn-back" id="cs-back-btn">&larr; BACK</button>
+        <button class="menu-btn menu-btn-primary" id="cs-confirm-btn">SELECT &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
        SETTINGS
        ============================================================ -->
   <div id="screen-settings" class="screen hidden">

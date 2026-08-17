@@ -275,3 +275,196 @@ body {
   color: #aaa;
   line-height: 1.5;
 }
+
+/* ============================================================
+   CHARACTER SELECT — Tekken-style roster screen
+   ============================================================ */
+
+#screen-char-select.screen {
+  align-items: center;
+  background:
+    linear-gradient(135deg, rgba(231,76,60,0.06) 0%, transparent 40%),
+    linear-gradient(-135deg, rgba(0,188,212,0.06) 0%, transparent 40%),
+    #05050a;
+}
+
+.cs-wrap {
+  width: 100%;
+  max-width: 880px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.cs-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.cs-player-tag {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 22px;
+  color: #fff;
+  letter-spacing: 3px;
+  text-shadow: 0 0 14px rgba(231, 76, 60, 0.7);
+  padding: 4px 22px;
+  border-top: 3px solid #e74c3c;
+  border-bottom: 3px solid #e74c3c;
+}
+
+/* Player 2 step gets a cyan accent instead of red, set via this modifier class */
+.cs-player-tag.p2-accent {
+  text-shadow: 0 0 14px rgba(0, 188, 212, 0.7);
+  border-top-color: #00bcd4;
+  border-bottom-color: #00bcd4;
+}
+
+.cs-instruction {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 10px;
+  color: #888;
+  letter-spacing: 2px;
+}
+
+.cs-stage {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cs-portrait-frame {
+  width: 230px;
+  height: 296px;
+  background: radial-gradient(ellipse at center, #16161f 0%, #050508 80%);
+  border: 3px solid #2a2a3a;
+  box-shadow: 0 0 0 4px #0a0a0f, 0 0 40px rgba(231, 76, 60, 0.25), inset 0 0 30px rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cs-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 220px;
+}
+
+.cs-name {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 26px;
+  color: #fff;
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px rgba(231, 76, 60, 0.6);
+}
+
+.cs-stat-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cs-stat-label {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 9px;
+  color: #999;
+  width: 60px;
+  flex-shrink: 0;
+}
+
+.cs-stat-bar {
+  flex: 1;
+  height: 12px;
+  background: #1a1a24;
+  border: 1px solid #2a2a3a;
+  overflow: hidden;
+}
+
+.cs-stat-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #e74c3c, #ff9800);
+  transition: width 0.25s ease;
+}
+
+/* Roster strip — the row of selectable fighter face-boxes along the bottom */
+.cs-roster {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px;
+  background: rgba(10, 10, 16, 0.6);
+  border: 1px solid #1e1e2a;
+}
+
+.cs-roster-item {
+  width: 84px;
+  height: 108px;
+  background: #0e0e16;
+  border: 2px solid #2a2a3a;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: border-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+.cs-roster-item:hover {
+  border-color: #666;
+  transform: translateY(-3px);
+}
+
+.cs-roster-item.selected {
+  border-color: #e74c3c;
+  box-shadow: 0 0 18px rgba(231, 76, 60, 0.6);
+  transform: translateY(-4px);
+}
+
+.cs-roster-item.selected.p2-accent {
+  border-color: #00bcd4;
+  box-shadow: 0 0 18px rgba(0, 188, 212, 0.6);
+}
+
+.cs-roster-label {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 7px;
+  color: #aaa;
+  letter-spacing: 0.5px;
+}
+
+.cs-roster-item.selected .cs-roster-label {
+  color: #fff;
+}
+
+.cs-roster-item.random-item {
+  background: linear-gradient(135deg, #1a1408, #0e0e16);
+}
+
+.cs-roster-item.random-item .cs-roster-label {
+  color: #ff9800;
+}
+
+.cs-hint {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 8px;
+  color: #555;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.cs-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.cs-actions .menu-btn {
+  padding: 14px 26px;
+}

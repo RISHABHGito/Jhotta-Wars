@@ -85,6 +85,8 @@ const Audio = (() => {
     fightStart() { tone(660, 'square', 0.1, 0.4); setTimeout(() => tone(880, 'square', 0.2, 0.4), 120); },
     roundWin()   { [523,659,784,1047].forEach((f,i) => setTimeout(() => tone(f,'square',0.15,0.35), i*100)); },
     projectile() { tone(500, 'sine', 0.04, 0.15); },
+    menuMove()   { tone(400, 'square', 0.04, 0.15); },
+    menuConfirm(){ tone(500, 'square', 0.06, 0.2); tone(750, 'square', 0.08, 0.2); },
   };
 })();
 
